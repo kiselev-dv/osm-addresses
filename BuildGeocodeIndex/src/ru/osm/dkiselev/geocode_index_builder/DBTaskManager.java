@@ -32,22 +32,38 @@ public class DBTaskManager {
         	if(connection != null){
         		for(DBTask task : tasks){
         			
-        			String querryString = task.getQuerry();
-        			
-					try {
-						
-						Statement stm = connection.createStatement();
-						
-						ResultSet rs = stm.executeQuery(querryString);
-						
-						while(rs.next()){
-							task.handleRow(rs);
-						}
-						
-					} catch (SQLException e) {
-						throw new RuntimeException("Failed to execute querry " + querryString, e);
-					}
+        			try{
+        				while(task.doAgain()){
+        					
+        					String querryString = task.getQuerry();
+        					
+        					try {
+        						
+        						Statement stm = connection.createStatement();
+        						
+        						ResultSet rs = stm.executeQuery(querryString);
+        						
+        						while(rs.next()){
+        							task.handleRow(rs);
+        						}
+        						
+        						rs.close();
+        						
+        					} catch (SQLException e) {
+        						throw new RuntimeException("Failed to execute querry " + querryString, e);
+        					}
+        				}
+        			}finally{
+        				task.done();
+        			}
         		}
+        	}
+        }
+        catch (Exception t)
+        {
+        	if(t.getCause() instanceof SQLException){
+        		t.printStackTrace();
+        		((SQLException)t.getCause()).getNextException().printStackTrace();
         	}
         }
         finally{

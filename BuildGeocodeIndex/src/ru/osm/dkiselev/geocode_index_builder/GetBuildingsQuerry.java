@@ -7,10 +7,13 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class GetBuildingsQuerry implements DBTask {
 
+	private int counter = 0;
+	
+	private int batchCounter = 0;
+	
 	@Override
 	public String getQuerry() {
 		return 
@@ -30,9 +33,9 @@ public class GetBuildingsQuerry implements DBTask {
                 "%%bldngOSM.tags, " +
                 "ST_AsText(ST_Centroid(bldng.geom)) " +
             "from layer.\"RU building-polygon\" bldng " +
-                "join layer.\"RU settlement-polygon\" settle on ST_Within(bldng.geom, settle.geom) " +
+                "inner join layer.\"RU settlement-polygon\" settle on ST_Within(bldng.geom, settle.geom) " +
                 "join osm_polygon bldngOSM on bldngOSM.osm_id = bldng.osm_id " + 
-            "where bldng.\"A_HSNMBR\" is not null and settle.\"NAME\" is not null limit 10000";
+            "where bldng.\"A_HSNMBR\" is not null limit 10000 offset " + counter;
 	}
 
 	@Override
@@ -55,6 +58,9 @@ public class GetBuildingsQuerry implements DBTask {
 		
 		processRow(new AddressRowWrapper(building_id, place_id, country, region, district, population, 
 				name, nameEN, nameRU, suburb, tags.get("quarter"), street, number, tags, lonlat));
+		
+		counter++;
+		batchCounter++;
 	}
 
 	private void processRow(AddressRowWrapper addressRow) {
@@ -82,6 +88,20 @@ public class GetBuildingsQuerry implements DBTask {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public boolean doAgain() {
+		if(batchCounter == 10000 || batchCounter == 0){
+			batchCounter = 0;
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void done() {
+		PSQLWriter.getInstance().close();
 	}
 
 }

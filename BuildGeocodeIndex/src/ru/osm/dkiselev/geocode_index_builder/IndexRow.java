@@ -1,5 +1,7 @@
 package ru.osm.dkiselev.geocode_index_builder;
 
+import java.math.BigDecimal;
+
 public class IndexRow {
 
 	private double lon;
@@ -18,6 +20,9 @@ public class IndexRow {
 	private String placeNameRU;
 	
 	private AddressRowType addressRowType;
+	
+	private BigDecimal buildingOSMid;
+	private BigDecimal placeOSMid;
 	
 	public IndexRow(){
 		
@@ -40,6 +45,9 @@ public class IndexRow {
 		placeNameEN = addressRow.getPlaceNameEN();
 		placeNameRU = addressRow.getPlaceNameRU();
 		addressRowType = addressRow.getType();
+		
+		buildingOSMid = addressRow.getBuildingOSMid();
+		placeOSMid = addressRow.getPlaceOSMid();
 	}
 	
 	public String getFullAddressRU(){
@@ -75,6 +83,66 @@ public class IndexRow {
 		}
 		
 		return result.toString();
-	} 
+	}
 
+	public double getLon() {
+		return lon;
+	}
+
+	public double getLat() {
+		return lat;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public String getPlaceName() {
+		return placeName;
+	}
+
+	public String getQuarter() {
+		return quarter;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public String getPlacePopulation() {
+		return placePopulation;
+	}
+
+	public String getPlaceNameEN() {
+		return placeNameEN;
+	}
+
+	public String getPlaceNameRU() {
+		return placeNameRU;
+	}
+
+	public AddressRowType getAddressRowType() {
+		return addressRowType;
+	}
+
+	public BigDecimal getBuildingOSMid() {
+		return buildingOSMid;
+	}
+
+	public BigDecimal getPlaceOSMid() {
+		return placeOSMid;
+	} 
+	
 }

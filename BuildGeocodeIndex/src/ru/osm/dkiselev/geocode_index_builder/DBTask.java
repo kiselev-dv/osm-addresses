@@ -9,4 +9,8 @@ public interface DBTask {
 
 	public void handleRow(ResultSet rs) throws SQLException;
 
+	public boolean doAgain();
+
+	public void done();
+
 }
