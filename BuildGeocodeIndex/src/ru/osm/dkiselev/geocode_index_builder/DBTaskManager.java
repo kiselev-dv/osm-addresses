@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
 
+import ru.osm.dkiselev.geocode_index_builder.querries.DBTask;
+
 public class DBTaskManager {
 	
 	public static void execute(Collection<DBTask> tasks){

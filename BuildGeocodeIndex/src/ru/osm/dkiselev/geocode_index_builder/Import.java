@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.apache.commons.lang.time.DurationFormatUtils;
 
+import ru.osm.dkiselev.geocode_index_builder.querries.DBTask;
+import ru.osm.dkiselev.geocode_index_builder.querries.GetBuildingsQuerry;
+
 public class Import {
 
 	/**

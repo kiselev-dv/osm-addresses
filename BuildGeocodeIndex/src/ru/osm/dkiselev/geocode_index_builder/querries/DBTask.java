@@ -1,4 +1,4 @@
-package ru.osm.dkiselev.geocode_index_builder;
+package ru.osm.dkiselev.geocode_index_builder.querries;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
