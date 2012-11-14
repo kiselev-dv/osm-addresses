@@ -77,10 +77,12 @@ public class GetPlacesQuerry extends PageableQuerryTask {
 		//}
 		
 		if(StringUtils.stripToNull(district) == null){
-			citySQL.append(" NULL");
+			citySQL.append(" NULL,");
 		}else{
-			citySQL.append(" '").append(StringEscapeUtils.escapeSql(district)).append("'");
+			citySQL.append(" '").append(StringEscapeUtils.escapeSql(district)).append("',");
 		}
+		
+		citySQL.append("ST_GeomFromText('").append(geometry).append("')");
 		
 		citySQL.append(")");
 		
