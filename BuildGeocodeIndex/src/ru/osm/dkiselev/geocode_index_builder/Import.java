@@ -6,7 +6,8 @@ import java.util.List;
 import org.apache.commons.lang.time.DurationFormatUtils;
 
 import ru.osm.dkiselev.geocode_index_builder.querries.DBTask;
-import ru.osm.dkiselev.geocode_index_builder.querries.GetBuildingsQuerry;
+import ru.osm.dkiselev.geocode_index_builder.querries.GetPlacesQuerry;
+import ru.osm.dkiselev.geocode_index_builder.writers.PSQLWriter;
 
 public class Import {
 
@@ -17,13 +18,15 @@ public class Import {
 		
 		
 		List<DBTask> tasks = new ArrayList<DBTask>();
-		tasks.add(new GetBuildingsQuerry());
+		tasks.add(new GetPlacesQuerry());
 
 		long start = System.currentTimeMillis();
 		
 		DBTaskManager.execute(tasks);
+		PSQLWriter.getInstance().close();
 
-		DurationFormatUtils.formatDurationHMS(System.currentTimeMillis() - start);
+		String durationString = DurationFormatUtils.formatDurationHMS(System.currentTimeMillis() - start);
+		System.out.println("Done in " + durationString);
 	}
 
 }
